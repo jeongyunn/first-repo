@@ -36,7 +36,7 @@ public class EscapeChar {
 		
 		System.out.println("C:\\Program Files\\AdopOpenJDK\\jdk-8.0.292.10-hotspot\\bin");
 		System.out.println("\\n");
-		//코드 수
+		//코드 수정
 		
 		
 	}
