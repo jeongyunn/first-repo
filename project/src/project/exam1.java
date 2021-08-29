@@ -1,58 +1,31 @@
 package project;
 
-import java.util.Scanner;
-
+import java.util.*;
 
 public class exam1 {
 
 	static Scanner sc = new Scanner(System.in);
+
+	static List<Shape> shapes = new ArrayList();
 	
 	public static void main(String[] args) {
-
-		String s;
-		int menu;
-		boolean cunt = true;
 		
+		boolean cunt = true;
 		
 		while(cunt) {
 			try {
 				
-				System.out.print("문자 입력 : ");
-				s = sc.nextLine(); 
+				System.out.print("메뉴를 선택하세요 \n 1.입력 2.출력 \n");
+				int mainMenu = sc.nextInt();	sc.nextLine();
 				
-				if(!s.equals("#") && !s.equals("*")) {
-					throw new Exception("Bad request");
-					} 
-	
-				System.out.println("1. 직선 2. 삼각형 3.정사각형 4. 직사각형");
-				System.out.print("메뉴를 선택해주세요 : ");
-				menu = sc.nextInt();	sc.nextLine();
-				if(menu < 1 || menu > 4) {
-					throw new Exception("Bad request");
-					}
-				
-				String str1 = "*";
-				
-				if(s.equals("#")) {
-					str1 = "#";
-					}
-				
-				switch(menu) {
+				switch(mainMenu) {
 				case 1:
-					drawLine(str1);
+					chooseShape();
 					break;
 				case 2:
-					drawTriangle(str1);
-					break;
-				case 3:
-					drawSquare(str1);
-					break;
-				case 4:
-					drawRectangle(str1);
-					break;
+					printAll();
 				}
-				
-				
+	
 				System.out.print("계속하시겠습니까? y/n : ");
 				String a = sc.nextLine();
 				
@@ -69,33 +42,68 @@ public class exam1 {
 		}
 	}
 	
-	// 직선메뉴 추가 
-	public static void drawLine(String line) throws Exception {
-		System.out.print("정수(크기) 입력 : ");
-		int n = sc.nextInt();	sc.nextLine();
+	public static void printAll() {
+		for(int i = 0; i < shapes.size(); i++) {
+			Shape shape = shapes.get(i);
+			shape.draw("@");
+			System.out.println("==========");
+		}
+	}
+	
+	public static String chooseDrawType() throws Exception {
+		System.out.print("문자 입력 : ");
+		String s = sc.nextLine(); 
 		
-		if(n < 1) {
+		if(!s.equals("#") && !s.equals("*")) {
+			throw new Exception("Bad request");
+		} 
+		return s;
+	}
+	
+	public static void chooseShape() throws Exception{
+		System.out.println("1. 직선 2. 삼각형 3.정사각형 4. 직사각형");
+		System.out.print("메뉴를 선택해주세요 : ");
+		int shapeMenu = sc.nextInt();	sc.nextLine();
+		
+		if(shapeMenu < 1 || shapeMenu > 4) {
+			throw new Exception("Bad request");
+		}
+		String drawType = chooseDrawType();
+		
+		
+		switch(shapeMenu) {
+		case 1:
+			drawLine(drawType);
+			break;
+		case 2:
+			drawTriangle(drawType);
+			break;
+		case 3:
+			drawSquare(drawType);
+			break;
+		case 4:
+			drawRectangle(drawType);
+			break;
+		}
+	}
+	
+	public static void drawLine(String drawType) throws Exception {
+		System.out.print("정수(크기) 입력 : ");
+		int size = sc.nextInt();	sc.nextLine();
+		
+		if(size < 1) {
 			throw new Exception("Bad request");
 		}
 		
 		System.out.print("출력 타입 (가로/세로) : ");
 		String type = sc.nextLine();
 		
-		if(type.equals("가로")) {
-			for(int i = 0; i < n; i++) {
-				System.out.print(line);
-			}
-			System.out.println();
-		} else if(type.equals("세로")) {
-			for(int i = 0; i < n; i++) {
-				System.out.println(line);
-			}
-			System.out.println();
-		}
-		System.out.println();
+		Line line = new Line(size, type);
+		line.draw(drawType);
+		shapes.add(line);
 	}
 	
-	public static void drawTriangle(String str1) throws Exception {
+	public static void drawTriangle(String drawType) throws Exception {
 		System.out.print("크기 입력 : ");
 		int size = sc.nextInt();	sc.nextLine();
 		
@@ -103,33 +111,28 @@ public class exam1 {
 			throw new Exception("Bad request");
 		}
 		
-		for(int i = 0; i < size; i++) {
-			for(int j = 0; j < i+1; j++){
-				System.out.print(str1);
-			}
-			System.out.println();
-		}
-		System.out.println();
+		Triangle triangle = new Triangle(size);
+		triangle.draw(drawType);
+		shapes.add(triangle);
+
 	}
 	
-	public static void drawSquare(String str1) throws Exception {
+	public static void drawSquare(String drawType) throws Exception {
 		System.out.print("정수 입력 : ");
-		int n = sc.nextInt(); 	sc.nextLine();
+		int size = sc.nextInt(); 	sc.nextLine();
 		
-		if(n < 1) {
+		if(size < 1) {
 			throw new Exception("Bad request");
 		}
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < n; j++) {
-				System.out.print(str1);
-			}
-			System.out.println();
-		}
-		System.out.println();
+		
+		Square square = new Square(size);
+		square.draw(drawType);
+		shapes.add(square);
+
 	}
 	
 	
-	public static void drawRectangle(String starHash) throws Exception {
+	public static void drawRectangle(String drawType) throws Exception {
 		System.out.print("가로 길이 입력 : ");
 		int width = sc.nextInt();	
 		System.out.print("세로 길이 입력 : ");
@@ -139,13 +142,11 @@ public class exam1 {
 			throw new Exception("Bad request");
 		}
 		
-		for(int i = 0; i < height; i++) {
-			for(int j = 0; j < width; j++) {
-				System.out.print(starHash);
-			}
-			System.out.println();
-		}
-		System.out.println();
+		Rectangle rec = new Rectangle(width, height);
+		rec.draw(drawType);
+		shapes.add(rec);
+
+		
 	}
 
 	
