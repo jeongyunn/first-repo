@@ -65,7 +65,7 @@ public class LibraryMenu {
 		
 		Book[] searchList = new Book[] {};
 		// 결과값을 Book[] 자료형 searchList에 담아 검색결과인 도서목록 출력 -> 모르겠음ㅜㅜ
-//		System.out.println(searchList());
+		// System.out.println(searchList());
 	}
 	
 	public void rentBook() {
